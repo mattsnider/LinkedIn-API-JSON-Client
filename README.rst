@@ -1,0 +1,82 @@
+Introduction
+============
+
+The LinkedIn-API-JSON-Client library provides an abstract interface for working with the LinkedIn API. My goal is that you should not have to understand oauth or much of the details of the LinkedIn client library (if setup correctly, it should just work).
+
+All functions and classes are documented inline. If you have additional questions, I can be reach on github or at admin@mattsnider.com.
+
+Disclaimer
+==========
+
+This package is loosely based on the LinkedIn-Client-Library by Aaron Brenzel. The original library was written for XML support, but LinkedIn now supports JSON responses, which IMHO provides a cleaner interface for use with python. I have tried to preserve the same general architecture and api functions, while improving error management and making the API more DRY.
+
+Getting started
+===============
+
+Standard stuff applies to install. Run this from
+the command line:
+
+        python setup.py install
+
+This package is intended for use with the LinkedIn API. You must supply your own API key for this library to work. Once you have an API key from LinkedIn, the syntax for instantiating an API client object is this::
+
+    my_key = 'mysecretkey'
+    my_secret = 'mysecretsecret'
+    li_client = LinkedInJsonAPI(my_key, my_secret)
+
+From there, you can obtain request tokens, authorization urls,
+access tokens, and actual LinkedIn data through the LinkedInAPI
+object's methods.  The object will handle signing requests, url
+formatting, and JSON parsing for you.
+
+Dependencies
+============
+
+Currently, the API is only dependent on oauth2 and simplejson. Both can easily be obtained using Python Package Index, and should be automatically included.
+
+Authorization Guide
+===================
+
+Oauth authorization is a multi-step process. When a user wants to authorize your app, you must first create an authorization URL, indicating which permissions your application needs, and redirect the user there::
+
+    from linkedin_json_client.constants import LinkedInScope
+    try:
+        request_token_dict = li_client.get_request_token(scope=[
+            LinkedInScope.BASIC_PROFILE, LinkedInScope.EMAIL_ADDRESS])
+        url = '%s?%s' % (li_client.authorize_path, urlencode(request_token_dict))
+        # store your request token in the user session for use in callback
+        request.session['li_request_token'] = request_token_dict
+        # REDIRECT USER TO url
+    except (HTTPError, socket.error):
+        # failed to connect to LinkedIn, handle this in your application
+
+When you setup your application on LinkedIn, you specified a callback URL for authorization. That URL should compare the stored request token against an oauth verifier token::
+
+    oauth_verifier = request.GET.get('oauth_verifier')
+    request_token = request.session.get('li_request_token')
+
+    oauth_problem = request.GET.get('oauth_problem')
+    if oauth_problem or request_token is None:
+        if oauth_problem == 'user_refused':
+            # user refused auth, handle in your application
+        # some other problem, handle in your application
+    else:
+        access_token = li_client.get_access_token(request_token, oauth_verifier)
+        # user successfully authorized, store this access_token and associate with the user for use with API
+
+Once you have an access token, you may make calls against the API::
+
+    from linkedin_json_client.constants import BasicProfileFields, BasicProfileSelectors
+    json_object = li_client.get_user_profile(access_token, [BasicProfileSelectors.FIRST_NAME, BasicProfileSelectors.LAST_NAME, BasicProfileSelectors.ID])
+
+    json_object[BasicProfileFields.ID]
+    json_object[BasicProfileFields.FIRST_NAME]
+    json_object[BasicProfileFields.LAST_NAME]
+
+If something goes wrong with any API calls, except authorization, a LinkedInApiJsonClientError is raised, so it is best to always wrap API calls in a try statement and handle the error in your app::
+
+    try:
+        # api call
+    except LinkedInApiJsonClientError, e:
+        print e
+
