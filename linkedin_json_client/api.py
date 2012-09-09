@@ -26,6 +26,7 @@ class LinkedInJsonAPI(object):
     api_update_status_url = base_url + '/v1/people/~/current-status'
 
     access_token_path = base_url + '/uas/oauth/accessToken'
+    authorize_path = base_url + '/uas/oauth/authorize'
     request_token_path = base_url + '/uas/oauth/requestToken'
 
     valid_network_update_codes = [
@@ -95,8 +96,8 @@ class LinkedInJsonAPI(object):
         object.
         """
         if 'type' in query_args.keys():
-            assert (type(query_args['type']) == type(list()),
-                    'Keyword argument "type" must be of type "list"')
+            assert type(query_args['type']) == type(list()),\
+                'Keyword argument "type" must be of type "list"'
             [self.check_network_code(c) for c in query_args['type']]
 
         if 'before' in query_args.keys():
@@ -285,8 +286,8 @@ class LinkedInJsonAPI(object):
         message. The LinkedIn API does not allow HTML in messages.
         All XML will be applied for you.
         """
-        assert (type(recipients) == type(list()),
-                '"Recipients argument" (2nd position) must be of type "list"')
+        assert type(recipients) == type(list()),\
+                '"Recipients argument" (2nd position) must be of type "list"'
         mxml = self.message_factory(recipients, subject, body)
         token = self.get_user_token(access_token)
         url = self.api_mailbox_url
