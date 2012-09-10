@@ -10,7 +10,7 @@ def convert_fields_to_selectors(selectors, fields):
         if '__' != attr[:2]:
             setattr(selectors, attr, re.sub(
                 r'([A-Z])', '-\\1', getattr(fields, attr)).lower())
-            print getattr(selectors, attr)
+#            print getattr(selectors, attr)
 
 
 class BasicProfileFields(object):
