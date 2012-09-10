@@ -8,7 +8,7 @@ All functions and classes are documented inline. If you have additional question
 Disclaimer
 ==========
 
-This package is loosely based on the LinkedIn-Client-Library by Aaron Brenzel. The original library was written for XML support, but LinkedIn now supports JSON responses, which IMHO provides a cleaner interface for use with python. I have tried to preserve the same general architecture and api functions, while improving error management and making the API more DRY.
+This package is loosely based on the LinkedIn-Client-Library by Aaron Brenzel. The original library was written for XML support, but LinkedIn now supports JSON responses, which IMHO provides a cleaner interface for use with python. I have tried to preserve the same general architecture and api functions, while adding some new ones, improving error management, and making the API more DRY.
 
 Getting started
 ===============
@@ -34,13 +34,14 @@ From there, you can obtain request tokens, authorization urls, access tokens, an
 Dependencies
 ============
 
-Currently, the API is only dependent on oauth2 and simplejson. Both can easily be obtained using Python Package Index, and should be automatically included.
+Currently, the API is dependent on oauth2, httplib2 (for oauth2), and simplejson. All can easily be obtained using Python Package Index, and will be automatically included, if you use PIP to install.
 
 Authorization Guide
 ===================
 
 Oauth authorization is a multi-step process. When a user wants to authorize your app, you must first create an authorization URL, indicating which permissions your application needs, and redirect the user there::
 
+    from urllib import urlencode
     from linkedin_json_client.constants import LinkedInScope
     try:
         request_token_dict = li_client.get_request_token(scope=[
@@ -82,3 +83,10 @@ If something goes wrong with any API calls, except authorization, a LinkedInApiJ
     except LinkedInApiJsonClientError, e:
         print e
 
+Todo
+====
+
+#. Search support
+#. Test coverage where the LinkedIn API is mocked
+#. Build docs from comments
+#. Test coverage against the LinkedIn API, will require test users with fairly complete profiles. Haven't been able to get help from LinkedIn to create test data, so if anyone has any ideas here, let me know.
