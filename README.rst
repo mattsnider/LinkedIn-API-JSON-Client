@@ -3,7 +3,7 @@ Introduction
 
 The LinkedIn-API-JSON-Client library provides an abstract interface for working with the LinkedIn API. My goal is that you should not have to understand oauth or much of the details of the LinkedIn client library (if setup correctly, it should just work).
 
-All functions and classes are documented inline. If you have additional questions, I can be reach on github or at admin@mattsnider.com.
+All functions and classes are documented inline. If you have additional questions, I can be reached on github or at admin@mattsnider.com.
 
 Disclaimer
 ==========
