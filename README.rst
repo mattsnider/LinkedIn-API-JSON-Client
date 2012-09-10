@@ -13,10 +13,15 @@ This package is loosely based on the LinkedIn-Client-Library by Aaron Brenzel. T
 Getting started
 ===============
 
-Standard stuff applies to install. Run this from
-the command line:
+Standard stuff applies to install. Use PIP to install with dependencies:
 
-        python setup.py install
+    pip install git+https://github.com/mattsnider/LinkedIn-API-JSON-Client.git#egg=linkedin_json_client
+
+Or install from the command line:
+
+    python setup.py install
+
+If you install from the command line, you will need to also install the oauth2, simplejson, and httplib2 packages.
 
 This package is intended for use with the LinkedIn API. You must supply your own API key for this library to work. Once you have an API key from LinkedIn, the syntax for instantiating an API client object is this::
 
@@ -24,10 +29,7 @@ This package is intended for use with the LinkedIn API. You must supply your own
     my_secret = 'mysecretsecret'
     li_client = LinkedInJsonAPI(my_key, my_secret)
 
-From there, you can obtain request tokens, authorization urls,
-access tokens, and actual LinkedIn data through the LinkedInAPI
-object's methods.  The object will handle signing requests, url
-formatting, and JSON parsing for you.
+From there, you can obtain request tokens, authorization urls, access tokens, and actual LinkedIn data through the LinkedInJsonAPI object's methods.  The object will handle signing requests, url formatting, and JSON parsing for you.
 
 Dependencies
 ============
