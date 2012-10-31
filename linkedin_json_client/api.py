@@ -81,9 +81,9 @@ class LinkedInJsonAPI(object):
         r_emailaddress permission.
         """
         token = self.get_user_token(access_token)
-        return simplejson.loads(self.request(
-            self.api_email_url, query_args, 'GET', token=token,
-            headers=headers))
+        s = self.request(self.api_email_url, query_args, 'GET', token=token,
+            headers=headers)
+        return None if 'null' == s else s
 
     def get_network_updates(self, access_token, **query_args):
         """
