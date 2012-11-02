@@ -1,4 +1,5 @@
 #! usr/bin/env python
+from datetime import datetime
 import time
 import urllib
 import urlparse
@@ -248,7 +249,17 @@ class LinkedInJsonAPI(object):
 
         # an error occurred
         if 400 <= resp.status and content:
-            raise LinkedInApiJsonClientError(simplejson.loads(content))
+            try:
+                raise LinkedInApiJsonClientError(simplejson.loads(content))
+            except:
+                # if not JSON, usually key=value pairs
+                error_json = {
+                    u'errorCode': u'unknown',
+                    u'message': u'%s' % dict(urlparse.parse_qsl(content)),
+                    u'status': u'unknown',
+                    u'timestamp': u'%s' % datetime.now()
+                }
+                raise LinkedInApiJsonClientError(error_json)
         return content
 
     def send_invitation(
