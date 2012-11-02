@@ -1,7 +1,16 @@
+# OS files
 *~
 .DS_Store
-*.pyc
-*.egg
+
+# IDE files
 .idea
+
+# python files
+*.pyc
 *.coverage
+
+# build files
+*.egg
+MANIFEST
+dist/
 build/

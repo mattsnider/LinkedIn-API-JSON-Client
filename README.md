@@ -15,7 +15,7 @@ Getting started
 
 Standard stuff applies to install. Use PIP to install with dependencies:
 
-    pip install git+https://github.com/mattsnider/LinkedIn-API-JSON-Client.git#egg=linkedin_json_client
+    pip install linkedin-api-json-client
 
 Or install from the command line:
 
