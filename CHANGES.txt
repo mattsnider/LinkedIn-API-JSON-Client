@@ -1,0 +1,5 @@
+v0.2.5, 11/2/2012 -- improved distribution.
+
+v0.1.4, 11/2/2012 -- Testing.
+
+v0.1, 9/3/2012 -- Initial release.
